@@ -12,10 +12,12 @@ public class Conics {
     int E = 0; //y
     int F = 0; //constant
     static String x2 = "x^2";
-    String xy = "xy";
-    String y2 = "y^2";
-    String x = "x";
-    String y = "y";
+    static String xy = "xy";
+    static String y2 = "y^2";
+    static String x = "x";
+    static String y = "y";
+    String[] terms = new String[]{x2,xy,y2,x,y};
+    //probably a lot of unnecessary variables?
     
     public static boolean isCoeff(String equation, String term){
     	//if the equation has given term
@@ -27,24 +29,29 @@ public class Conics {
 	
     public static int findCoeff(String equation, String term){
 		//finds x^2 coefficient and returns it as an integer
-    	int index, coeff;
+    	int index, coeff, prev;
     	index = equation.indexOf(term);
-    	coeff = Integer.parseInt(equation.substring(0,index)); //substring should not be (0,index) because that only works for the x^2 coefficient
+    	prev = 
+    	coeff = Integer.parseInt(equation.substring(0,index)); //substring should not be (0,index) because that works for only the x^2 coefficient
     	return coeff;
     }
     
-    public static void newLine(){
-    	System.out.print("\n");
+    public static int[] indexTerms(String equation,String[] terms){
+    	
     }
-	
+    
+    public static void assignCoeff(String equation){
+    	// assigns actual values to A B C D E F from coefficients gotten in findCoeff
+    	
+    }
+    
 	public static void main(String[] args) throws IOException { 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter String     ");
         equation = br.readLine();
         equation = equation.toLowerCase();
-        System.out.print("you entered: " + equation); //test
-        newLine();
-        if(isCoeff(equation, x2)) System.out.print("the " + x2 + " coefficient is " + findCoeff(equation, x2)); //test
+        System.out.println("you entered: " + equation); //test
+        if(isCoeff(equation, x2)) System.out.println("the " + x2 + " coefficient is " + findCoeff(equation, x2)); //test
         
         //for exceptions
         try{
