@@ -1,3 +1,14 @@
+/*
+ *  
+INPUT: There will be 5 sets of data. Each set will consist of a string representing an equation in general form. 
+The ^ will be used to denote exponents. 
+ 
+OUTPUT: For each set of data, print the type of figure the equation produces. If it is a circle, print the 
+location of its center in ordered pair format (x,y) and its radius. If it is an ellipse, print the location of its center 
+and the length of its major axis. If it is a hyperbola, print its center and the equation of the principal axis. If it is 
+a parabola, print its vertex and the equation of the axis of symmetry
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +24,14 @@ public class Conics {
     int F = 0; //constant
     static int[] indices = new int[5];
     static int[] coefficients = new int[5];
+    static String type;
+    static String center; // for a parabola, this is also the vertex
+    static String axis; // of principal axis of hyperbola, or of symmetry of parabola
+    static int length; // of either radius or major axis
 
+    public Conics(String equation) {
+    	this.equation = equation;
+    }
     
     public static boolean isCoeff(String equation, String term){
     	//if the equation has given term
@@ -31,7 +49,7 @@ public class Conics {
     	else return true;
     }
     
-    public static int[] indexTerms(String equation,String[] terms, int[] coefficients){
+    public static int[] indexTerms(String equation,int[] indices, int[] coefficients){
     	for(int i = 1;i<equation.length();++i){
     		if((equation.substring(i-1,i)).equals("x^2")){
     			coefficients[0] = Integer.parseInt(equation.substring(0,i));
