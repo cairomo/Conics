@@ -12,6 +12,7 @@ a parabola, print its vertex and the equation of the axis of symmetry
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Stack;
 
 public class Conics {
     static String equation = ""; // in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
@@ -22,6 +23,7 @@ public class Conics {
     int D = 0; //x
     int E = 0; //y
     int F = 0; //constant
+    static Stack<String> form = new Stack<String>(); // stack to check if equation is entered correctly
     static int[] indices = new int[5];
     static int[] coefficients = new int[5];
     static String type;
@@ -59,7 +61,7 @@ public class Conics {
     	
     	for(int i = 1;i<equation.length();++i){
     		if((equation.substring(i-1,i)).equals("y^2")){
-    			coefficients[2] = Integer.parseInt(equation.substring(0,i));
+    			coefficients[2] = Integer.parseInt(equation.substring(0,i)); // probably incorrect
     		}
     	}
     	return coefficients;
@@ -80,13 +82,8 @@ public class Conics {
         //for exceptions
         try{
             int i = Integer.parseInt(br.readLine());
-        }catch(NumberFormatException nfe){
+        } catch(NumberFormatException nfe){
             System.err.println("Invalid Format!");
-        }
-        
-        
-        
+        } 
     }
-	
-	
 }
