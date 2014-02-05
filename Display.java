@@ -35,6 +35,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 public class Display extends JPanel implements ActionListener {
@@ -42,6 +43,20 @@ public class Display extends JPanel implements ActionListener {
     protected static JTextField textField;
     protected static JTextArea textArea;
     private final static String newline = "\n";
+    
+    public static final int ROWS = 80;
+	public static final int COLS = 100;
+	private final int X_GRID_OFFSET = 25; // 25 pixels from left
+	private final int Y_GRID_OFFSET = 200; // 40 pixels from top
+	private final int GRID_WIDTH = 5;
+	private final int GRID_HEIGHT = 5;
+
+	// Note that a final field can be initialized in constructor
+	private final int DISPLAY_WIDTH = 800; 
+	private final int DISPLAY_HEIGHT = 600;
+	private StartButton startStop;
+	private ClearButton Clear;
+	private boolean paintloop = false;
 
     public Display(int DISPLAY_WIDTH, int DISPLAY_HEIGHT) {
         super(new GridBagLayout());
@@ -51,14 +66,13 @@ public class Display extends JPanel implements ActionListener {
         textField.setToolTipText("enter in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0");
         textField.addActionListener(this);
 
-        textArea = new JTextArea(DISPLAY_HEIGHT, DISPLAY_WIDTH);
+        textArea = new JTextArea(40, DISPLAY_WIDTH);
         textArea.setEditable(false);
         
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         //Add Components to this panel.
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.REMAINDER;
 
         c.fill = GridBagConstraints.HORIZONTAL;
         add(textField, c);
@@ -69,6 +83,61 @@ public class Display extends JPanel implements ActionListener {
         add(scrollPane, c);
         
     }
+    public void init() {
+		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
+		// Example of setting up a button.
+		// See the StartButton class nested below.
+		startStop = new StartButton();
+		startStop.setBounds(100, 550, 100, 36);
+		add(startStop);
+		startStop.setVisible(true);
+
+		//Clear button
+		Clear = new ClearButton();
+		Clear.setBounds(300, 550, 100, 36);
+		add(Clear);
+		Clear.setVisible(true);
+
+		repaint();
+	}
+    
+    public void paintComponent(Graphics g) {
+		final int TIME_BETWEEN_REPLOTS = 100; // change to your liking
+
+		g.setColor(Color.GRAY);
+		drawGrid(g);
+		drawButtons();
+
+		if (paintloop) {
+			try {
+				Thread.sleep(TIME_BETWEEN_REPLOTS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			repaint();
+		}
+		repaint();
+	}
+    
+    void drawGrid(Graphics g) {
+		for (int row = 0; row <= ROWS; row++) {
+			g.drawLine(X_GRID_OFFSET,
+					Y_GRID_OFFSET + (row * (GRID_HEIGHT + 1)), X_GRID_OFFSET
+					+ COLS * (GRID_WIDTH + 1), Y_GRID_OFFSET
+					+ (row * (GRID_HEIGHT + 1)));
+		}
+		for (int col = 0; col <= COLS; col++) {
+			g.drawLine(X_GRID_OFFSET + (col * (GRID_WIDTH + 1)), Y_GRID_OFFSET,
+					X_GRID_OFFSET + (col * (GRID_WIDTH + 1)), Y_GRID_OFFSET
+					+ ROWS * (GRID_HEIGHT + 1));
+		}
+	}
+
+    
+    private void drawButtons() {
+		startStop.repaint();
+	}
 
     public void actionPerformed(ActionEvent evt) {
         textArea.append(Conics.type + newline);
@@ -85,6 +154,55 @@ public class Display extends JPanel implements ActionListener {
     public String getEquation(ActionEvent evt) {
     	return textField.getText();
     }
+    
+    private class StartButton extends JButton implements ActionListener {
+		StartButton() {
+			super("Start");
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			// nextGeneration(); // test the start button
+			if (this.getText().equals("Start")) {
+				setText("Stop");
+				repaint();
+				
+			} else {
+				togglePaintLoop();
+				setText("Start");
+			}
+		}
+
+	}
+	private class ClearButton extends JButton implements ActionListener {
+		ClearButton() {
+			super("Clear");		
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			// nextGeneration(); // test the start button
+			for(int ROW = 0;ROW <100; ROW++){
+				for(int col = 0; col < 80; col++) {
+					//clear graph somehow
+					repaint();
+				}
+
+			}
+
+		
+		}
+	
+	
+	}
+	
+    public void togglePaintLoop() {
+		paintloop = !paintloop;
+	}
+
+	public void setPaintLoop(boolean value) {
+		paintloop = value;
+	}
 
 
     private static void createAndShowGUI() {
