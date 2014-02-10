@@ -1,197 +1,139 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-public class Display extends JPanel implements ActionListener {
-
-    protected static JTextField textField;
-    protected static JTextArea textArea;
-    private final static String newline = "\n";
-    
-    public static final int ROWS = 80;
-	public static final int COLS = 100;
-	private final int X_GRID_OFFSET = 25; // 25 pixels from left
-	private final int Y_GRID_OFFSET = 200; // 40 pixels from top
-	private final int GRID_WIDTH = 5;
-	private final int GRID_HEIGHT = 5;
-
-	// Note that a final field can be initialized in constructor
-	private final int DISPLAY_WIDTH = 800; 
-	private final int DISPLAY_HEIGHT = 600;
-	private StartButton startStop;
-	private ClearButton Clear;
-	private boolean paintloop = false;
-
-    public Display(int DISPLAY_WIDTH, int DISPLAY_HEIGHT) {
-        super(new GridBagLayout());
-        
-
-        textField = new JTextField(DISPLAY_WIDTH);
-        textField.setToolTipText("enter in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0");
-        textField.addActionListener(this);
-
-        textArea = new JTextArea(40, DISPLAY_WIDTH);
-        textArea.setEditable(false);
-        
-        JScrollPane scrollPane = new JScrollPane(textArea);
-
-        //Add Components to this panel.
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textField, c);
-
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        add(scrollPane, c);
-        
-    }
-    public void init() {
+public class Display extends JComponent implements MouseListener, MouseMotionListener {
+	
+	private final int DISPLAY_WIDTH; 
+	private final int DISPLAY_HEIGHT;
+	private JLabel description;
+	private SolveButton Solve;
+	private JTextField eqField;
+	private JTextField answer;
+	private JLabel eqDescription;
+	private JLabel ansDescription;
+	Conics c = new Conics("4x^2 + 16y^2 + 3x + 4y = 0");
+	
+	public Display(int width, int height) {
+		DISPLAY_WIDTH = width;
+		DISPLAY_HEIGHT = height;
+		init();
+	}
+	
+	public void init() {
 		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		
 
-		// Example of setting up a button.
-		// See the StartButton class nested below.
-		startStop = new StartButton();
-		startStop.setBounds(100, 550, 100, 36);
-		add(startStop);
-		startStop.setVisible(true);
-
-		//Clear button
-		Clear = new ClearButton();
-		Clear.setBounds(300, 550, 100, 36);
-		add(Clear);
-		Clear.setVisible(true);
-
-		repaint();
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		
+		description = new JLabel("Enter your equation, then press 'solve'");
+		description.setSize(950,20);
+		add(description);
+		description.setLocation(220, 20);
+		description.setVisible(true);
+		
+		eqDescription = new JLabel("Equation:");
+		eqDescription.setSize(300,20);
+		add(eqDescription);
+		eqDescription.setLocation(10, 100);
+		eqDescription.setVisible(true);
+		
+		ansDescription = new JLabel("Solution");
+		ansDescription.setSize(300,20);
+		add(ansDescription);
+		ansDescription.setLocation(10, 150);
+		ansDescription.setVisible(true);
+		
+		eqField = new JTextField();
+		eqField.setSize(100,20);
+		add(eqField);
+		eqField.setLocation(100,100);
+		eqField.setVisible(true);
+		eqField.setEditable(true);
+		
+		answer = new JTextField();
+		answer.setSize(100,20);
+		add(answer);
+		answer.setLocation(100,150);
+		answer.setVisible(true);
+		answer.setEditable(false);
+		
+		Solve = new SolveButton();
+		Solve.setBounds(200,100,100,25);
+		add(Solve);
+		Solve.setVisible(true);
+		Solve.setToolTipText("Click to show solution");
+		
 	}
-    
-    public void paintComponent(Graphics g) {
-		final int TIME_BETWEEN_REPLOTS = 100; // change to your liking
-
-		g.setColor(Color.GRAY);
-		drawGrid(g);
-		drawButtons();
-
-		if (paintloop) {
-			try {
-				Thread.sleep(TIME_BETWEEN_REPLOTS);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			repaint();
-		}
-		repaint();
+	
+	
+	public static void showEquation() {
+		
 	}
-    
-    void drawGrid(Graphics g) {
-		for (int row = 0; row <= ROWS; row++) {
-			g.drawLine(X_GRID_OFFSET,
-					Y_GRID_OFFSET + (row * (GRID_HEIGHT + 1)), X_GRID_OFFSET
-					+ COLS * (GRID_WIDTH + 1), Y_GRID_OFFSET
-					+ (row * (GRID_HEIGHT + 1)));
-		}
-		for (int col = 0; col <= COLS; col++) {
-			g.drawLine(X_GRID_OFFSET + (col * (GRID_WIDTH + 1)), Y_GRID_OFFSET,
-					X_GRID_OFFSET + (col * (GRID_WIDTH + 1)), Y_GRID_OFFSET
-					+ ROWS * (GRID_HEIGHT + 1));
-		}
-	}
-
-    
-    private void drawButtons() {
-		startStop.repaint();
-	}
-
-    public void actionPerformed(ActionEvent evt) {
-        textArea.append(Conics.type + newline);
-        textArea.append(Conics.center + newline);
-        textArea.append(Conics.length + newline);
-        textArea.append(Conics.axis + newline);
-        textField.selectAll();
-
-        //Make sure the new text is visible, even if there
-        //was a selection in the text area.
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-    }
-    
-    public String getEquation(ActionEvent evt) {
-    	return textField.getText();
-    }
-    
-    private class StartButton extends JButton implements ActionListener {
-		StartButton() {
-			super("Start");
+	
+	
+	private class SolveButton extends JButton implements ActionListener {
+		SolveButton() {
+			super("Solve");
 			addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent arg0) {
 			// nextGeneration(); // test the start button
-			if (this.getText().equals("Start")) {
-				setText("Stop");
-				repaint();
+			if (this.getText().equals("Solve")) {
+				showEquation();
 				
 			} else {
-				togglePaintLoop();
 				setText("Start");
 			}
 		}
-
 	}
-	private class ClearButton extends JButton implements ActionListener {
-		ClearButton() {
-			super("Clear");		
-			addActionListener(this);
-		}
-
-		public void actionPerformed(ActionEvent arg0) {
-			// nextGeneration(); // test the start button
-			for(int ROW = 0;ROW <100; ROW++){
-				for(int col = 0; col < 80; col++) {
-					//clear graph somehow
-					repaint();
-				}
-
-			}
-
+	
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
 		
-		}
-	
-	
-	}
-	
-    public void togglePaintLoop() {
-		paintloop = !paintloop;
 	}
 
-	public void setPaintLoop(boolean value) {
-		paintloop = value;
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("Conics");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        //Add contents to the window.
-        frame.add(new Display(70,40));
-        
-        frame.add(textField, BorderLayout.NORTH);
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
