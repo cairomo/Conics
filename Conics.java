@@ -3,20 +3,14 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.Stack;
 
 import javax.swing.JColorChooser;
 
 public class Conics {
 	String equation;
-	//coefficients
-    int A = 0; //x^2
-    int B = 0; //xy
-    int C = 0; //y^2
-    int D = 0; //x
-    int E = 0; //y
-    int F = 0; //constant
-	String shape;
+	String shape = "parabola";
 	Stack<Integer> coeff;
 	Stack<String> op;
 	Stack<String> terms;
@@ -24,11 +18,13 @@ public class Conics {
 	int numX = 0;
 	int numY = 0;
 	int numCaret = 0;
-	int x2co;
-	int xco;
-	int y2co;
-	int yco;
-	int constant;
+	//coefficients
+	int x2co = 0;
+	int xco = 0;
+	int y2co = 0;
+	int yco = 0;
+	int constant = 0;
+	int numOps = 0;
     static int[] indices = new int[5];
     static int[] coefficients = new int[5];
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -43,6 +39,7 @@ public class Conics {
     	this.numX = numX;
     	this.numY = numY;
     	this.numCaret = numCaret;
+    	this.numOps = numOps;
     	this.x2co = x2co;
     	this.xco = xco;
     	this.y2co = y2co;
@@ -52,6 +49,10 @@ public class Conics {
     
     public static String getEquation(Conics c) {
     	return c.equation;
+    }
+    
+    public static void setEquation(Conics c, String eq) {
+    	c.equation = eq;
     }
     
     public static String getFirstOp(Conics c) {
@@ -118,6 +119,10 @@ public class Conics {
     	return c.yco;
     }
     
+    public static int getNumOps(Conics c) {
+    	return c.numOps;
+    }
+    
     public static int getConstant(Conics c) {
     	return c.constant;
     }
@@ -152,9 +157,10 @@ public class Conics {
     	for(int i = 0;i<co.length;++i) {
     		if(isInt(co[i].toString())) {
     			s += co[i];
-    		} else if(co[i].equals('^') || co[i].equals('+') || co[i].equals('-')) {
+    		} else if(co[i].equals('^') || co[i].equals('+') || co[i].equals('-') || co[i].equals('=')) {
     			if(co[i].equals('^')) {
     				c.numCaret++;
+    				c.numOps++;
     			}
     			if(getFirstOp(c).equals(null)) {
     				setFirstOp(c,co[i].toString());
@@ -162,6 +168,7 @@ public class Conics {
     			getOp(c).add(co[i].toString());
     		} else if(co[i].equals('x') || co[i].equals('Y') || co[i].equals('X') || co[i].equals('y')) {
     			if(co[i].equals('x') || co[i].equals('X')) {
+    				//c.x2co = co[i];
     				c.numX++;
     			}
     			if(co[i].equals('y') || co[i].equals('Y')) {
@@ -191,11 +198,15 @@ public class Conics {
     	if(getNumCaret(c) < 2) {
     		setShape(c,"parabola");
     	}
+    	if(getOp(c).elementAt(getNumOps(c)-1).equals('=') || peekOp(c) == null) {
+    		setShape(c,"not a conic section");
+    	}
     	
     	return c.shape;
     }
 
     public static String getCenter(Conics c) {
+    	
     	int xcoord = 0;
     	int ycoord = 0;
     	//change to use xco, y2co, etc instead of really long stuff like this
