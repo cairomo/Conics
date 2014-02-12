@@ -19,9 +19,11 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 	private JLabel description;
 	private SolveButton Solve;
 	private JTextField eqField;
-	private JTextField answer;
+	private JTextField type;
+	private JTextField center;
 	private JLabel eqDescription;
 	private JLabel ansDescription;
+	public static String eq;
 	Conics c = new Conics("4x^2 + 16y^2 + 3x + 4y = 0");
 	
 	public Display(int width, int height) {
@@ -62,12 +64,19 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		eqField.setVisible(true);
 		eqField.setEditable(true);
 		
-		answer = new JTextField();
-		answer.setSize(100,20);
-		add(answer);
-		answer.setLocation(100,150);
-		answer.setVisible(true);
-		answer.setEditable(false);
+		type = new JTextField();
+		type.setSize(100,20);
+		add(type);
+		type.setLocation(100,150);
+		type.setVisible(true);
+		type.setEditable(false);
+		
+		center = new JTextField();
+		center.setSize(100,20);
+		add(center);
+		center.setLocation(100,200);
+		center.setVisible(true);
+		center.setEditable(false);
 		
 		Solve = new SolveButton();
 		Solve.setBounds(200,100,100,25);
@@ -92,8 +101,9 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		public void actionPerformed(ActionEvent arg0) {
 			// nextGeneration(); // test the start button
 			if (this.getText().equals("Solve")) {
-				showEquation();
-				
+				Conics.setEquation(c, eqField.getText());
+				type.setText(Conics.getShape(c));
+				center.setText(Conics.getCenter(c));
 			} else {
 				setText("Start");
 			}
