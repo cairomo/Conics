@@ -140,7 +140,7 @@ public class Conics {
         return true;
     }
 
-    
+    /*
     public static void initCoeff(Conics c) {
     	Character[] co = new Character[getEquation(c).length()];
     	for(int i = 0;i<co.length;++i) {
@@ -182,7 +182,7 @@ public class Conics {
     	if(getTerms(c).elementAt(0).equals('x') || getTerms(c).elementAt(0).equals('X')) {
     		
     	}
-    }
+    } */
     	
     public static void setShape(Conics c, String s) {
     	c.shape = s;
