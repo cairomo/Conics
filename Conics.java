@@ -19,117 +19,47 @@ public class Conics {
 	int numY = 0;
 	int numCaret = 0;
 	//coefficients
-	int x2co = 0;
-	int xco = 0;
-	int y2co = 0;
-	int yco = 0;
-	int constant = 0;
-	int numOps = 0;
+	double x2 = 0;
+	double x = 0;
+	double y2 = 0;
+	double y = 0;
+	double constant = 0;
     static int[] indices = new int[5];
     static int[] coefficients = new int[5];
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public Conics(String equation) {
-    	this.equation = equation; // in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
-    	this.shape = shape;
-    	this.coeff = coeff;
-    	this.op = op;
-    	this.terms = terms;
-    	this.firstOp = firstOp;
-    	this.numX = numX;
-    	this.numY = numY;
-    	this.numCaret = numCaret;
-    	this.numOps = numOps;
-    	this.x2co = x2co;
-    	this.xco = xco;
-    	this.y2co = y2co;
-    	this.yco = yco;
+    public Conics(double x2, double x, double y2, double y, double constant) {
+    	this.x2 = x2; // in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
+    	this.x = x;
+    	this.y2 = y2;
+    	this.y = y;
     	this.constant = constant;
-    }
-    
-    public static String getEquation(Conics c) {
-    	return c.equation;
-    }
-    
-    public static void setEquation(Conics c, String eq) {
-    	c.equation = eq;
-    }
-    
-    public static String getFirstOp(Conics c) {
-    	return c.firstOp;
-    }
-    
-    public static void setFirstOp(Conics c, String f) {
-    	c.firstOp = f;
-    }
-    
-    public static void setNumX(Conics c, int x) {
-    	c.numX = x;
-    }
-    
-    public static int getNumX(Conics c) {
-    	return c.numX;
-    }
-    
-    public static void setNumY(Conics c, int y) {
-    	c.numX = y;
-    }
-    
-    public static int getNumY(Conics c) {
-    	return c.numY;
-    }
-    
-    public static int getNumCaret(Conics c) {
-    	return c.numCaret;
-    }
-    
-    public static Stack<String> getTerms(Conics c) {
-    	return c.terms;
-    }
-    
-    public static String peekOp(Conics c) {
-    	return c.op.peek();
-    }
-    
-    public static Stack<String> getOp(Conics c) {
-    	return c.op;
     }
     
     public static void setCoeff(Conics c,int ind,int val) {
     	c.coeff.add(ind, val);
     }
     
-    public static int getTopCoeff(Conics c) {
-    	return c.coeff.peek();
+    public double getX2() {
+    	return this.x2;
     }
     
-    public static int getX2Co(Conics c) {
-    	return c.x2co;
+    public double getX() {
+    	return this.x;
     }
     
-    public static int getXCo(Conics c) {
-    	return c.xco;
+    public double getY2() {
+    	return this.y2;
     }
     
-    public static int getY2Co(Conics c) {
-    	return c.y2co;
+    public double gety() {
+    	return this.y;
+    }
+  
+    public double getConstant() {
+    	return this.constant;
     }
     
-    public static int getyCo(Conics c) {
-    	return c.yco;
-    }
-    
-    public static int getNumOps(Conics c) {
-    	return c.numOps;
-    }
-    
-    public static int getConstant(Conics c) {
-    	return c.constant;
-    }
-    
-    public static Stack<Integer> getCoeff(Conics c) {
-    	return c.coeff;
-    }
     
     public static boolean isInt(String s) {
         try { 
@@ -189,7 +119,7 @@ public class Conics {
     }
     
     public static String getShape(Conics c) {
-    	if(getFirstOp(c).equals("-")) {
+    /*	if(this.getX().equals("-")) {
     		setShape(c,"hyperbola");
     	}
     	if(getFirstOp(c).equals("+")) {
@@ -202,7 +132,8 @@ public class Conics {
     		setShape(c,"not a conic section");
     	}
     	
-    	return c.shape;
+    	return c.shape; */
+    	return "";
     }
 
     public static String getCenter(Conics c) {
@@ -210,14 +141,16 @@ public class Conics {
     	int xcoord = 0;
     	int ycoord = 0;
     	//change to use xco, y2co, etc instead of really long stuff like this
-    	if((getTerms(c).elementAt(0).equals('x') && getTerms(c).elementAt(1).equals('X')) || 
+    	/*
+    	 
     			(getTerms(c).elementAt(0).equals('X') && getTerms(c).elementAt(1).equals('x'))) {
     		xcoord = -(( getCoeff(c).elementAt(1) / getCoeff(c).elementAt(0) ) / 2 ) * (( getCoeff(c).elementAt(1) / getCoeff(c).elementAt(0) ) / 2 );
     	} else if(getTerms(c).elementAt(1).equals('y') && getTerms(c).elementAt(2).equals('Y') || 
     			getTerms(c).elementAt(1).equals('Y') && getTerms(c).elementAt(2).equals('y')) {
     		ycoord = -(( getCoeff(c).elementAt(2) / getCoeff(c).elementAt(1) ) / 2 ) * (( getCoeff(c).elementAt(2) / getCoeff(c).elementAt(1) ) / 2 );
     	}
-    	return "(" + Integer.toString(xcoord) +  "," + Integer.toString(ycoord) + ")";
+    	return "(" + Integer.toString(xcoord) +  "," + Integer.toString(ycoord) + ")"; */
+    	return "";
     }
     
     
