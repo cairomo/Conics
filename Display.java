@@ -18,7 +18,8 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 	private final int DISPLAY_HEIGHT;
 	private JLabel description;
 	private SolveButton Solve;
-	private JTextField eqField;
+	private JTextField A, B, C, D, E;
+	private JLabel xsquared, x, ysquared, y, end;
 	private JTextField type;
 	private JTextField center;
 	private JLabel eqDescription;
@@ -57,12 +58,71 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		ansDescription.setLocation(10, 150);
 		ansDescription.setVisible(true);
 		
-		eqField = new JTextField();
-		eqField.setSize(100,20);
-		add(eqField);
-		eqField.setLocation(100,100);
-		eqField.setVisible(true);
-		eqField.setEditable(true);
+		A = new JTextField();
+		A.setSize(30,20);
+		add(A);
+		A.setLocation(100,100);
+		A.setVisible(true);
+		A.setEditable(true);
+		
+		B = new JTextField();
+		B.setSize(30,20);
+		add(B);
+		B.setLocation(170,100);
+		B.setVisible(true);
+		B.setEditable(true);
+		
+		C = new JTextField();
+		C.setSize(30,20);
+		add(C);
+		C.setLocation(240,100);
+		C.setVisible(true);
+		C.setEditable(true);
+		
+		D = new JTextField();
+		D.setSize(30,20);
+		add(D);
+		D.setLocation(310,100);
+		D.setVisible(true);
+		D.setEditable(true);
+		
+		E = new JTextField();
+		E.setSize(30,20);
+		add(E);
+		E.setLocation(380,100);
+		E.setVisible(true);
+		E.setEditable(true);
+		
+		xsquared = new JLabel("x^2 +");
+		xsquared.setSize(50,20);
+		add(xsquared);
+		xsquared.setLocation(130, 100);
+		xsquared.setVisible(true);
+		
+		x = new JLabel("x +");
+		x.setSize(50,20);
+		add(x);
+		x.setLocation(200, 100);
+		x.setVisible(true);
+		
+		ysquared = new JLabel("y^2 +");
+		ysquared.setSize(50,20);
+		add(ysquared);
+		ysquared.setLocation(270, 100);
+		ysquared.setVisible(true);
+		
+		y = new JLabel("y +");
+		y.setSize(50,20);
+		add(y);
+		y.setLocation(340, 100);
+		y.setVisible(true);
+		
+		end = new JLabel("= 0");
+		end.setSize(50,20);
+		add(end);
+		end.setLocation(410, 100);
+		end.setVisible(true);
+		
 		
 		type = new JTextField();
 		type.setSize(100,20);
@@ -79,7 +139,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		center.setEditable(false);
 		
 		Solve = new SolveButton();
-		Solve.setBounds(200,100,100,25);
+		Solve.setBounds(450,100,100,25);
 		add(Solve);
 		Solve.setVisible(true);
 		Solve.setToolTipText("Click to show solution");
@@ -101,7 +161,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		public void actionPerformed(ActionEvent arg0) {
 			// nextGeneration(); // test the start button
 			if (this.getText().equals("Solve")) {
-				Conics.setEquation(c, eqField.getText());
+				Conics.setEquation(c, A.getText());
 				type.setText(Conics.getShape(c));
 				center.setText(Conics.getCenter(c));
 			} else {
