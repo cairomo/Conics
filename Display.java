@@ -25,7 +25,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 	private JLabel eqDescription;
 	private JLabel ansDescription;
 	public static String eq;
-	Conics c = new Conics("4x^2 + 16y^2 + 3x + 4y = 0");
+	Conics c = new Conics(1,2,3,4,5);
 	
 	public Display(int width, int height) {
 		DISPLAY_WIDTH = width;
@@ -161,7 +161,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		public void actionPerformed(ActionEvent arg0) {
 			// nextGeneration(); // test the start button
 			if (this.getText().equals("Solve")) {
-				Conics.setEquation(c, A.getText());
+			//	Conics.setEquation(c, A.getText());
 				type.setText(Conics.getShape(c));
 				center.setText(Conics.getCenter(c));
 			} else {
