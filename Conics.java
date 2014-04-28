@@ -9,36 +9,26 @@ import java.util.Stack;
 import javax.swing.JColorChooser;
 
 public class Conics {
-	String equation;
-	String shape = "parabola";
-	Stack<Integer> coeff;
-	Stack<String> op;
-	Stack<String> terms;
-	String firstOp = "";
-	int numX = 0;
-	int numY = 0;
-	int numCaret = 0;
 	//coefficients
-	double x2 = 0;
-	double x = 0;
-	double y2 = 0;
-	double y = 0;
-	double constant = 0;
+	private double x2 = 0;
+	private double x = 0;
+	private double y2 = 0;
+	private double y = 0;
+	private double constant = 0;
+	private String type = "";
     static int[] indices = new int[5];
     static int[] coefficients = new int[5];
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public Conics(double x2, double x, double y2, double y, double constant) {
+    public Conics(double x2, double y2, double x, double y, double constant, String type) {
     	this.x2 = x2; // in the form Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
     	this.x = x;
     	this.y2 = y2;
     	this.y = y;
     	this.constant = constant;
+    	this.type = type;
     }
-    
-    public static void setCoeff(Conics c,int ind,int val) {
-    	c.coeff.add(ind, val);
-    }
+  
     
     public double getX2() {
     	return this.x2;
@@ -52,7 +42,7 @@ public class Conics {
     	return this.y2;
     }
     
-    public double gety() {
+    public double getY() {
     	return this.y;
     }
   
@@ -61,13 +51,58 @@ public class Conics {
     }
     
     
-    public static boolean isInt(String s) {
+    public boolean isInt(String s) {
         try { 
             Integer.parseInt(s); 
         } catch(NumberFormatException e) { 
             return false; 
         }
         return true;
+    }
+    
+    public double getCenterX() {
+    	if(this.getType() != "parabola") {
+    		return (- this.getX() / (2 * this.getX2()));
+    	} else {
+    		if(this.getX2() != 0) {
+    			return (- this.getX() / (2 * this.getX2()));
+    		} else {
+    			return (- this.getY() / (2 * this.getX2()));
+    		}
+    	}
+ 
+    }
+    
+    public double getCenterY() {
+    	if(this.getType() != "parabola") {
+    		return (- this.getY() / (2 * this.getX2()));
+    	} else {
+    		if(this.getX2() != 0) {
+    			return (- (this.getConstant() - this.getX() * this.getX() / (4 * this.getX2())) / ( -  this.getY()));
+    		} else {
+    			return (- (this.getConstant() - this.getY() * this.getY() / (4 * this.getY2())) / ( -  this.getX()));
+    		}
+    	}
+    	
+    }
+    
+
+
+    
+    public String getType() {
+    	if(this.getX2() != 0 && this.getY2() != 0) {
+    		if((this.getX2() > 0 && this.getY2() < 0) ||
+    				(this.getX2() < 0 && this.getY2() > 0)) {
+    			this.setType("hyperbola");
+    		} else if(this.getX2() == this.getY2()) {
+    			this.setType("circle");
+    		} else {
+    			this.setType("ellipse");
+    		}
+    	} else {
+    		this.setType("parabola");
+    	}
+    	return this.type;
     }
 
     /*
@@ -114,29 +149,11 @@ public class Conics {
     	}
     } */
     	
-    public static void setShape(Conics c, String s) {
-    	c.shape = s;
+    public void setType(String s) {
+    	this.type = s;
     }
     
-    public static String getShape(Conics c) {
-    /*	if(this.getX().equals("-")) {
-    		setShape(c,"hyperbola");
-    	}
-    	if(getFirstOp(c).equals("+")) {
-    		setShape(c,"ellipse");
-    	}
-    	if(getNumCaret(c) < 2) {
-    		setShape(c,"parabola");
-    	}
-    	if(getOp(c).elementAt(getNumOps(c)-1).equals('=') || peekOp(c) == null) {
-    		setShape(c,"not a conic section");
-    	}
-    	
-    	return c.shape; */
-    	return "";
-    }
-
-    public static String getCenter(Conics c) {
+    public String getCenter(Conics c) {
     	
     	int xcoord = 0;
     	int ycoord = 0;
