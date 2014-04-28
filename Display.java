@@ -18,6 +18,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 	private final int DISPLAY_HEIGHT;
 	private JLabel description;
 	private SolveButton Solve;
+	private ClearButton Clear;
 	private JTextField A, B, C, D, E;
 	private JLabel xsquared, x, ysquared, y, end;
 	private JTextField type;
@@ -143,12 +144,14 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		Solve.setVisible(true);
 		Solve.setToolTipText("Click to show solution");
 		
-	}
-	
-	
-	public static void showEquation() {
+		Clear = new ClearButton();
+		Clear.setBounds(450,250,100,25);
+		add(Clear);
+		Clear.setVisible(true);
+		Clear.setToolTipText("Clear all numbers to start over");
 		
 	}
+	
 	
 	
 	private class SolveButton extends JButton implements ActionListener {
@@ -165,9 +168,27 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 				
 				type.setText(temp.getType());
 				center.setText("(" + temp.getCenterX() + ", " + temp.getCenterY() + ")");
-			} else {
-				setText("Start");
-			}
+			} 
+		}
+	}
+	
+	private class ClearButton extends JButton implements ActionListener {
+		ClearButton() {
+			super("Clear");
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			// nextGeneration(); // test the start button
+			if (this.getText().equals("Clear")) {
+				A.setText("");
+				B.setText("");
+				C.setText("");
+				D.setText("");
+				E.setText("");
+				type.setText("");
+				center.setText("");
+			} 
 		}
 	}
 	
