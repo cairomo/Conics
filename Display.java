@@ -25,7 +25,6 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 	private JLabel eqDescription;
 	private JLabel ansDescription;
 	public static String eq;
-	Conics c = new Conics(1,2,3,4,5);
 	
 	public Display(int width, int height) {
 		DISPLAY_WIDTH = width;
@@ -99,19 +98,19 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		xsquared.setLocation(130, 100);
 		xsquared.setVisible(true);
 		
-		x = new JLabel("x +");
+		x = new JLabel(" x +");
 		x.setSize(50,20);
 		add(x);
-		x.setLocation(200, 100);
+		x.setLocation(270, 100);
 		x.setVisible(true);
 		
 		ysquared = new JLabel("y^2 +");
 		ysquared.setSize(50,20);
 		add(ysquared);
-		ysquared.setLocation(270, 100);
+		ysquared.setLocation(200, 100);
 		ysquared.setVisible(true);
 		
-		y = new JLabel("y +");
+		y = new JLabel(" y +");
 		y.setSize(50,20);
 		add(y);
 		y.setLocation(340, 100);
@@ -132,7 +131,7 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		type.setEditable(false);
 		
 		center = new JTextField();
-		center.setSize(100,20);
+		center.setSize(340,20);
 		add(center);
 		center.setLocation(100,200);
 		center.setVisible(true);
@@ -161,9 +160,11 @@ public class Display extends JComponent implements MouseListener, MouseMotionLis
 		public void actionPerformed(ActionEvent arg0) {
 			// nextGeneration(); // test the start button
 			if (this.getText().equals("Solve")) {
-			//	Conics.setEquation(c, A.getText());
-				type.setText(Conics.getShape(c));
-				center.setText(Conics.getCenter(c));
+				Conics temp = new Conics(Double.parseDouble(A.getText()),Double.parseDouble(B.getText()),Double.parseDouble(C.getText()),
+						Double.parseDouble(D.getText()),Double.parseDouble(E.getText()), "");
+				
+				type.setText(temp.getType());
+				center.setText("(" + temp.getCenterX() + ", " + temp.getCenterY() + ")");
 			} else {
 				setText("Start");
 			}
